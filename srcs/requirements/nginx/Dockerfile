@@ -1,6 +1,9 @@
 # Tells the image to use
 FROM debian:bullseye
 
+# Author credits, replaces MAINTAINER (deprecated)
+LABEL maintainer="mbernard@student.42lyon.fr"
+
 # Installations + erases useless files to make the image smaller
 RUN apt update -y && apt upgrade -y && apt install -y \
     openssl \
