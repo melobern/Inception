@@ -1,5 +1,3 @@
-version: '3.8'
-
 networks:
   inception:
     driver: bridge
@@ -11,24 +9,31 @@ volumes:
   
 services:
   nginx:
+    image: nginx
     container_name: nginx
+    build: requirements/nginx
     ports:
       - "443:443"
-    depends-on: wordpress
+    networks:
+      - inception
+    env_file:
+      - .env
+    restart: on-failure
+ #   depends-on: wordpress
 
 
-  wordpress:
-    container_name: wordpress
-    depends-on: mariadb
-    restart_policy:
-      condition: on-failure
+ # wordpress:
+  #  container_name: wordpress
+   # depends-on: mariadb
+   # restart_policy:
+   #   condition: on-failure
 
-  mariadb:
-    container_name: mariadb
-    restart_policy:
-      condition: on-failure
+ # mariadb:
+  #  container_name: mariadb
+   # restart_policy:
+    #  condition: on-failure
 
-  redis:
+    #  redis:
 
-  adminer:
+    #  adminer:
 

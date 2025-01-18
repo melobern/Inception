@@ -1,11 +1,11 @@
 # Tells the image to use
-FROM debian:bullseye
+FROM alpine:3.20.5
 
 # Author credits, replaces MAINTAINER (deprecated)
 LABEL maintainer="mbernard@student.42lyon.fr"
 
 # Installations + erases useless files to make the image smaller
-RUN apt update -y && apt upgrade -y && apt install -y \
+RUN apk update --no-interactive && apk upgrade --no-interactive && apk add --no-interactive \
     openssl \
     nginx \
     && rm -rf /var/lib/apt/lists/*
