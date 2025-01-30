@@ -4,36 +4,78 @@ networks:
 
 volumes:
   wordpress:
-  website:
+    name: wordpress
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mbernard/data/wordpress
+
+# website:
+#   name: website
+#   driver: local
+#   driver_opts:
+#     type: none
+#     o: bind
+#     device: /home/mbernard/data/website
+
   mariadb:
+    name: mariadb
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mbernard/data/mariadb
   
 services:
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    build: ./requirements/mariadb/.
+    env_file:
+      - .env
+    volumes:
+      - mariadb:/var/lib/mysql
+    networks:
+      - inception
+    expose:
+      - "3306:3306"
+    restart: unless-stopped
+
+  wordpress:
+    image: wordpress
+    container_name: wordpress
+    build: requirements/wordpress/ .
+    env_file:
+      - .env
+    volumes:
+      -wordpress:/var/www/html
+    networks:
+      - inception
+    restart: on-failure
+    depends-on: mariadb
+
   nginx:
     image: nginx
     container_name: nginx
-    build: requirements/nginx
+    build: requirements/nginx/ .
+    env_file:
+      - .env
+    volumes:
+      - wordpress:/var/www/html
+        #  - website:/var/www/resume
+      - /var/log/nginx:/var/log/nginx
     ports:
       - "443:443"
     networks:
       - inception
-    env_file:
-      - .env
     restart: on-failure
- #   depends-on: wordpress
+    depends-on: 
+      - wordpress
+#     - website
 
-
- # wordpress:
-  #  container_name: wordpress
-   # depends-on: mariadb
-   # restart_policy:
-   #   condition: on-failure
-
- # mariadb:
-  #  container_name: mariadb
-   # restart_policy:
-    #  condition: on-failure
-
+    #  website:
     #  redis:
-
+    #  ftp:
     #  adminer:
-
+    #  service bonus:
