@@ -1,4 +1,4 @@
-#root
+# root
 su
 apt-get install sudo make git curl ufw ssh zsh vim neovim -y
 echo "mbernard ALL=(ALL) ALL" >> /etc/sudoers
@@ -7,17 +7,17 @@ su -
 usermod -aG sudo mbernard
 usermod -aG docker mbernard
 
-#user mbernard
+# user mbernard (with sudo)
 sudo ufw enable
 sudo ufw allow 22 #if not allowed
 
-AFTER SSH IS CONFIGURED 
+# AFTER SSH IS CONFIGURED 
 
-ZSH INSTALLATION
+# ZSH INSTALLATION
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-DOCKER INSTALLATION
-[# Add Docker's official GPG key:
+# DOCKER INSTALLATION
+# Add Docker's official GPG key:
 sudo apt-get update
 sudo apt-get install ca-certificates curl
 sudo install -m 0755 -d /etc/apt/keyrings
@@ -32,13 +32,14 @@ echo \
 sudo apt-get update****
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin](https://docs.docker.com/engine/install/debian/)
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-#(source === https://docs.docker.com/engine/install/debian/)
+# (source === https://docs.docker.com/engine/install/debian/)
 
-TEST WITH THE DOCKER FIRST CONTAINER WEBSITE
+# TEST WITH THE DOCKER FIRST CONTAINER WEBSITE
 docker run -d -p 8080:80 docker/welcome-to-docker
 #(source === https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/)
 
 # Generate key ssh
 ssh-keygen
+
 # TO SHUTDOWN DEBIAN :
 poweroff
