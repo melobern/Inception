@@ -42,4 +42,4 @@ docker run -d -p 8080:80 docker/welcome-to-docker
 ssh-keygen
 
 # TO SHUTDOWN DEBIAN :
-poweroff
+sudo poweroff
