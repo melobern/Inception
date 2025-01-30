@@ -38,5 +38,7 @@ TEST WITH THE DOCKER FIRST CONTAINER WEBSITE
 docker run -d -p 8080:80 docker/welcome-to-docker
 #(source === https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/)
 
-TO SHUTDOWN DEBIAN :
+# Generate key ssh
+ssh-keygen
+# TO SHUTDOWN DEBIAN :
 poweroff
