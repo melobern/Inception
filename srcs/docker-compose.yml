@@ -31,7 +31,7 @@ services:
   mariadb:
     image: mariadb
     container_name: mariadb
-    build: ./requirements/mariadb/.
+    build: ./requirements/mariadb/
     env_file:
       - .env
     volumes:
@@ -45,20 +45,21 @@ services:
   wordpress:
     image: wordpress
     container_name: wordpress
-    build: requirements/wordpress/ .
+    build: requirements/wordpress/
     env_file:
       - .env
     volumes:
-      -wordpress:/var/www/html
+      - wordpress:/var/www/html
     networks:
       - inception
     restart: on-failure
-    depends-on: mariadb
+    depends_on: 
+      - mariadb
 
   nginx:
     image: nginx
     container_name: nginx
-    build: requirements/nginx/ .
+    build: requirements/nginx/
     env_file:
       - .env
     volumes:
@@ -70,7 +71,7 @@ services:
     networks:
       - inception
     restart: on-failure
-    depends-on: 
+    depends_on: 
       - wordpress
 #     - website
 

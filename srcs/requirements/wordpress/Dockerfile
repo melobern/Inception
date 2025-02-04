@@ -7,11 +7,12 @@ LABEL maintainer="mbernard@student.42lyon.fr"
 # Installations + erases useless files to make the image smaller
 RUN apk update --no-interactive && apk upgrade --no-interactive && apk add --no-interactive \
     mariadb-client \
-    php7.4 \
+    php \
     php-fpm \
-    php-mysql \
+    php-mysqli \
+    php-mysqlnd \
     wget \
-    && apk autoremove && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/cache/apk/*
 
 EXPOSE 9000
 

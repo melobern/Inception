@@ -8,7 +8,16 @@ LABEL maintainer="mbernard@student.42lyon.fr"
 RUN apk update --no-interactive && apk upgrade --no-interactive && apk add --no-interactive \
     openssl \
     nginx \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/cache/apk/*
+
+# Create www-data user and group if they don't exist
+RUN if ! getent group www-data > /dev/null 2>&1; then \
+        addgroup -S www-data; \
+    fi && \
+    if ! getent passwd www-data > /dev/null 2>&1; then \
+        adduser -S www-data -G www-data; \
+    fi
+
 
 # Configure TSL/SSL
 RUN mkdir -p /etc/nginx/ssl
@@ -26,7 +35,8 @@ COPY ./conf/nginx.conf /etc/nginx.nginx.conf
 EXPOSE 443
 
 # For the website/Wordpress
-RUN chmod -R /var/www/html
+RUN mkdir -p /var/www/html
+RUN chmod -R 755 /var/www/html
 RUN chown -R www-data:www-data /var/www/html
 
 # Nginx must not demonize : if it did, Docker would stop
