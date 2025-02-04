@@ -13,10 +13,10 @@ RUN apk update --no-interactive && apk upgrade --no-interactive && apk add --no-
 # PHP configuration 
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
-ARG MARIADB_SCRIPT=/usr/local/bin/mariadb_init.sh
-
 # Wordpress configuration 
-COPY ./tools/mariadb_init.sh ${MARIADB_SCRIPT}
-RUN chmod +x ${MARIADB_SCRIPT}
+COPY ./tools/mariadb_init.sh /usr/local/bin/mariadb_init.sh
+RUN chmod +x /usr/local/bin/mariadb_init.sh
 
-ENTRYPOINT [${MARIADB_SCRIPT}]
+#ENTRYPOINT [${MARIADB_SCRIPT}]
+ENTRYPOINT ["/usr/local/bin/mariadb_init.sh"]
+

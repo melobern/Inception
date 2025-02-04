@@ -1,11 +1,11 @@
-# Tells the image to use
+# Use the official Alpine Linux image as a base image
 FROM alpine:3.20.5
 
 # Author credits, replaces MAINTAINER (deprecated)
 LABEL maintainer="mbernard@student.42lyon.fr"
 
-# Installations + erases useless files to make the image smaller
-RUN apk update --no-interactive && apk upgrade --no-interactive && apk add --no-interactive \
+# Install dependencies
+RUN apk update --no-cache --no-interactive && apk upgrade --no-cache --no-interactive && apk add --no-cache --no-interactive \
     mariadb-client \
     php \
     php-fpm \
@@ -14,15 +14,45 @@ RUN apk update --no-interactive && apk upgrade --no-interactive && apk add --no-
     wget \
     && rm -rf /var/cache/apk/*
 
+# Expose the PHP-FPM port
 EXPOSE 9000
 
-# PHP configuration 
-COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+# PHP configuration
+COPY ./conf/www.conf /etc/php7/php-fpm.d/www.conf
 
-ARG WP_SCRIPT=/usr/local/bin/wp_init.sh
+# WordPress configuration
+COPY ./tools/wp_init.sh /usr/local/bin/wp_init.sh
+RUN chmod +x /usr/local/bin/wp_init.sh
+
+ENTRYPOINT ["/usr/local/bin/wp_init.sh"]
+
+#
+#
+# Tells the image to use
+#FROM alpine:3.20.5
+
+# Author credits, replaces MAINTAINER (deprecated)
+#LABEL maintainer="mbernard@student.42lyon.fr"
+
+# Installations + erases useless files to make the image smaller
+#RUN apk update --no-cache --no-interactive && apk upgrade --no-cache --no-interactive && apk add --no-cache --no-interactive \
+#    mariadb-client \
+#    php \
+#    php-fpm \
+#    php-mysqli \
+#    php-mysqlnd \
+#    wget \
+#    && rm -rf /var/cache/apk/*
+
+#EXPOSE 9000
+
+# PHP configuration 
+#COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
 # Wordpress configuration 
-COPY ./tools/wp_init.sh ${WP_SCRIPT}
-RUN chmod +x ${WP_SCRIPT}
+#COPY ./tools/wp_init.sh /usr/local/bin/wp_init.sh
 
-ENTRYPOINT [${WP_SCRIPT}]
+#RUN chmod +x /usr/local/bin/wp_init.sh
+
+
+#ENTRYPOINT ["/usr/local/bin/wp_init.sh"]
