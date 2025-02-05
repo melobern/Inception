@@ -11,6 +11,7 @@ RUN apk update --no-cache --no-interactive && apk upgrade --no-cache --no-intera
     php-fpm \
     php-mysqli \
     php-mysqlnd \
+    php-phar \
     wget \
     && rm -rf /var/cache/apk/*
 
@@ -23,6 +24,7 @@ COPY ./conf/www.conf /etc/php7/php-fpm.d/www.conf
 # WordPress configuration
 COPY ./tools/wp_init.sh /usr/local/bin/wp_init.sh
 RUN chmod +x /usr/local/bin/wp_init.sh
+
 
 ENTRYPOINT ["/usr/local/bin/wp_init.sh"]
 

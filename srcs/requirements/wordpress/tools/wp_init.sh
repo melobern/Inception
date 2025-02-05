@@ -32,19 +32,23 @@ if [ ! -e /var/www/html/wp-config.php ]; then
             --user_pass="${WP_USER_PASSWORD}" \
             --allow-root
 
+        #php config
+        wp config create --dbname="${SQL_DATABASE}" --dbuser="${SQL_USER}" --dbpass="${SQL_PASSWORD}" --dbhost="mariadb:3306" --allow-root
+
         # Redis configuration
-        wp config set WP_REDIS_HOST "${REDIS_HOST}" --allow-root
-        wp config set WP_REDIS_PORT 6379 --allow-root
-        wp config set WP_CACHE_KEY_SALT "${DOMAIN_NAME}" --allow-root
-        wp config set WP_REDIS_CLIENT "${REDIS_CLIENT}" --allow-root
+        # wp config set WP_REDIS_HOST "${REDIS_HOST}" --allow-root
+        # wp config set WP_REDIS_PORT 6379 --allow-root
+        # wp config set WP_CACHE_KEY_SALT "${DOMAIN_NAME}" --allow-root
+        # wp config set WP_REDIS_CLIENT "${REDIS_CLIENT}" --allow-root
 fi
 
 # Install and activate plugins
-wp plugin install redis-cache --activate --allow-root
-wp plugin update redis-cache --allow-root
-wp redis enable --allow-root
+# wp plugin install redis-cache --activate --allow-root
+# wp plugin update redis-cache --allow-root
+# wp redis enable --allow-root
 
 # Set ownership and permissions
+RUN adduser -D -g 'www' www-data
 chown -R www-data:www-data /var/www/html
 find /var/www/html -type d -exec chmod 755 {} \;
 find /var/www/html -type f -exec chmod 644 {} \;

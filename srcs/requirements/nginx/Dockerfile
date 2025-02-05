@@ -29,7 +29,7 @@ RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt \
 
 # Create directories for nginx + copy the good conf file to nginx location
 RUN mkdir -p /var/run/nginx
-COPY ./conf/nginx.conf /etc/nginx.nginx.conf
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 # Port to expose
 EXPOSE 443
@@ -37,6 +37,7 @@ EXPOSE 443
 # For the website/Wordpress
 RUN mkdir -p /var/www/html
 RUN chmod -R 755 /var/www/html
+RUN chmod -R 600 /etc/nginx/ssl/inception.key
 RUN chown -R www-data:www-data /var/www/html
 
 # Nginx must not demonize : if it did, Docker would stop
