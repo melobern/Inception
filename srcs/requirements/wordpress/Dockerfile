@@ -12,6 +12,7 @@ RUN apk update --no-cache --no-interactive && apk upgrade --no-cache --no-intera
     php-mysqli \
     php-mysqlnd \
     php-phar \
+    php-iconv \
     wget \
     && rm -rf /var/cache/apk/*
 
