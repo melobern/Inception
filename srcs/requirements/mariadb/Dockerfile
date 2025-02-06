@@ -13,10 +13,12 @@ RUN apk update --no-interactive && apk upgrade --no-interactive && apk add --no-
     && rm -rf /var/cache/apk/*
 
 # PHP configuration 
-COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY ./conf/mariadb-server.cnf /etc/my.cnf.d/mariadb-server.cnf
 
 # Wordpress configuration 
 COPY ./tools/mariadb_init.sh /usr/local/bin/mariadb_init.sh
+
+EXPOSE 3306
 
 RUN chmod +x /usr/local/bin/mariadb_init.sh
 
