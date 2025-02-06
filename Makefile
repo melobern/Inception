@@ -6,10 +6,10 @@ up:
 	mkdir -p $(HOME)/data/mariadb
 	mkdir -p $(HOME)/data/wordpress
 	mkdir -p $(HOME)/data/website
-	docker compose -f $(COMPOSE_FILE) -p inception up --build -d
+	docker compose -f $(COMPOSE_FILE) -p inception up --build -d 
 
 down:
-	docker compose -f $(COMPOSE_FILE) -p inception down --remove-orphans 
+	docker compose -f $(COMPOSE_FILE) -p inception down --rmi all --remove-orphans 
 
 stop:
 	docker compose -f $(COMPOSE_FILE) -p inception stop

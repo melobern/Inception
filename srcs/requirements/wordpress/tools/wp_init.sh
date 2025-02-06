@@ -10,6 +10,7 @@ mv wp-cli.phar /usr/local/bin/wp
 sleep 10
 
 if [ ! -e /var/www/html/wp-config.php ]; then
+        echo "WP NOT INSTALLED !"
         wp core download --allow-root
 
         wp core config \
@@ -33,31 +34,38 @@ if [ ! -e /var/www/html/wp-config.php ]; then
             --allow-root
 
         #php config
-        wp config create --dbname="${SQL_DATABASE}" --dbuser="${SQL_USER}" --dbpass="${SQL_PASSWORD}" --dbhost="mariadb:3306" --allow-root
+#        wp config create --dbname="${SQL_DATABASE}" --dbuser="${SQL_USER}" --dbpass="${SQL_PASSWORD}" --dbhost="mariadb:3306" --allow-root
 
-        # Redis configuration
-        # wp config set WP_REDIS_HOST "${REDIS_HOST}" --allow-root
-        # wp config set WP_REDIS_PORT 6379 --allow-root
-        # wp config set WP_CACHE_KEY_SALT "${DOMAIN_NAME}" --allow-root
-        # wp config set WP_REDIS_CLIENT "${REDIS_CLIENT}" --allow-root
 fi
 
-# Install and activate plugins
-# wp plugin install redis-cache --activate --allow-root
-# wp plugin update redis-cache --allow-root
-# wp redis enable --allow-root
-
 # Set ownership and permissions
-RUN adduser -D -g 'www' www-data
-chown -R www-data:www-data /var/www/html
+chown -R www-data:www-data /var/www/html || true
+chmod -R 755 /var/www/html
 find /var/www/html -type d -exec chmod 755 {} \;
 find /var/www/html -type f -exec chmod 644 {} \;
 # Set wp-content to writable (for redis cache)
-chown -R www-data:www-data /var/www/html/wp-content
+chown -R www-data:www-data /var/www/html/wp-content || true
 chmod -R 775 /var/www/html/wp-content
 
 mkdir -p /run/php
 chown www-data:www-data /run/php
 chmod 755 /run/php
+echo "Checking PHP-FPM binary..."
+ls -l /usr/sbin/ | grep php
+ls -l /usr/bin/ | grep php
+ls -l /usr/local/bin/ | grep php
+which php-fpm
+which php-fpm7
+which php-fpm8
+which php-fpm7.4    
+PHP_FPM_BIN=$(which php-fpm83)
 
-exec /usr/sbin/php-fpm7.4 -F
+if [ -z "$PHP_FPM_BIN" ]; then
+    echo "php-fpm binary not found"
+    # exit 1
+fi
+
+# Start PHP-FPM
+# exec $PHP_FPM_BIN -F
+# exec /usr/sbin/php-fpm83  -F || exec php-fpm8  -F || exec /usr/sbin/php-fpm  -F ||  exec php-fpm83  -F
+exec php-fpm83 -F
