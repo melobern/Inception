@@ -50,20 +50,6 @@ chmod -R 775 /var/www/html/wp-content
 mkdir -p /run/php
 chown www-data:www-data /run/php
 chmod 755 /run/php
-echo "Checking PHP-FPM binary..."
-ls -l /usr/sbin/ | grep php
-ls -l /usr/bin/ | grep php
-ls -l /usr/local/bin/ | grep php
-which php-fpm
-which php-fpm7
-which php-fpm8
-which php-fpm7.4    
-PHP_FPM_BIN=$(which php-fpm83)
-
-if [ -z "$PHP_FPM_BIN" ]; then
-    echo "php-fpm binary not found"
-    # exit 1
-fi
 
 # Start PHP-FPM
 # exec $PHP_FPM_BIN -F

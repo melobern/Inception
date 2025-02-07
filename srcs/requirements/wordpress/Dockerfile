@@ -7,12 +7,12 @@ LABEL maintainer="mbernard@student.42lyon.fr"
 # Install dependencies
 RUN apk update --no-cache --no-interactive && apk upgrade --no-cache --no-interactive && apk add --no-cache --no-interactive \
     mariadb-client \
-    php \
-    php-fpm \
-    php-mysqli \
-    php-mysqlnd \
-    php-phar \
-    php-iconv \
+    php83 \
+    php83-fpm \
+    php83-mysqli \
+    php83-mysqlnd \
+    php83-phar \
+    php83-iconv \
     wget \
     && rm -rf /var/cache/apk/*
 

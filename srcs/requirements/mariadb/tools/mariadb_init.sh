@@ -27,8 +27,9 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
     fi
 fi
 
-mkdir -p /run/mysqld /run/mysql /var/lib/mysql 
-chown -R mysql:mysql /run/mysqld /run/mysql /var/lib/mysql
+mkdir -p /run/mysqld /run/mysql /var/lib/mysql /var/log/mysql/
+chown -R mysql:mysql /run/mysqld /run/mysql /var/lib/mysql /var/log/mysql/
+chmod -R 755 /var/log/mysql/
 
 # RUN chmod 777 /var/run/mysqld
 # mkdir -p /run/mysql
@@ -47,12 +48,12 @@ until mysqladmin ping -u root -p${SQL_ROOT_PASSWORD}; do
 	sleep 1;
 done
 
-# Check if the socket file exists
-# if [ ! -S /run/mysqld/mysqld.sock ]; then
-#     echo "Error: MariaDB socket file not found!"
-#     ls -l /run/mysqld
-#     exit 1
-# fi
+#Check if the socket file exists
+if [ ! -S /run/mysqld/mysqld.sock ]; then
+    echo "Error: MariaDB socket file not found!"
+    ls -l /run/mysqld
+    exit 1
+fi
 
 # echo "MariaDB started successfully LOL."
 # Create the database and user
