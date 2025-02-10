@@ -6,6 +6,7 @@ up:
 	mkdir -p $(HOME)/data/mariadb
 	mkdir -p $(HOME)/data/wordpress
 	mkdir -p $(HOME)/data/website
+	cp $(HOME)/.env ./srcs
 	docker compose -f $(COMPOSE_FILE) -p inception up --build -d 
 
 down:
@@ -23,20 +24,22 @@ ps:
 config:
 	docker compose -f $(COMPOSE_FILE) -p inception config
 
-clean:
+clean: stop
 	docker system prune -f -a --volumes
+	docker volume rm wordpress || true
+	docker volume rm mariadb || true
 
 fclean: clean
-	rm -rf $(HOME)/data
+	sudo rm -rf $(HOME)/data
 
 re: fclean
 	all
 
 totalClean:
-	docker stop $$(docker ps -qa)
-	docker rm $$(docker ps -qa)
-	docker rmi -f $$(docker images -qa)
-	docker volume rm -f $$(docker volume ls -q)
+	docker stop $$(docker ps -qa);
+	docker rm $$(docker ps -qa);
+	docker rmi -f $$(docker images -qa);
+	docker volume rm -f $$(docker volume ls -q);
 	docker network rm -f $$(docker network ls -q) 2>/dev/null
 
 .PHONY: up down stop logs ps config clean fclean totalClean
