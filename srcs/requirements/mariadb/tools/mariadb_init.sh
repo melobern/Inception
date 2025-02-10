@@ -31,11 +31,6 @@ mkdir -p /run/mysqld /run/mysql /var/lib/mysql /var/log/mysql/
 chown -R mysql:mysql /run/mysqld /run/mysql /var/lib/mysql /var/log/mysql/
 chmod -R 755 /var/log/mysql/
 
-# RUN chmod 777 /var/run/mysqld
-# mkdir -p /run/mysql
-# chown -R mysql:mysql /run/mysqld
-# chown -R mysql:mysql /var/lib/mysql
-
 # Start the MySQL server
 echo "Starting MariaDB server..."
 mysqld --user=mysql --datadir=/var/lib/mysql &
@@ -55,21 +50,16 @@ if [ ! -S /run/mysqld/mysqld.sock ]; then
     exit 1
 fi
 
-# echo "MariaDB started successfully LOL."
 # Create the database and user
 echo "Creating database and user..."
 mysql -u root -p${SQL_ROOT_PASSWORD} -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
 mysql -u root -p${SQL_ROOT_PASSWORD} -e "CREATE USER IF NOT EXISTS '${SQL_USER}' IDENTIFIED BY '${SQL_PASSWORD}';"
 mysql -u root -p${SQL_ROOT_PASSWORD} -e "GRANT ALL PRIVILEGES ON *.* TO '${SQL_USER}';"
-# Activate the changes
 mysql -u root -p${SQL_ROOT_PASSWORD} -e "FLUSH PRIVILEGES;"
-# Set the root password
 mysql -u root -p${SQL_ROOT_PASSWORD} -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
 
 # Shutdown the database and restart it on foreground
-# echo "Shutting down MariaDB..."
 kill "$pid"
 wait "$pid"
 echo "Restarting MariaDB in foreground..."
 exec mysqld --user=mysql 
-# --datadir=/var/lib/mysql

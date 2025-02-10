@@ -32,18 +32,12 @@ if [ ! -e /var/www/html/wp-config.php ]; then
             --role=author \
             --user_pass="${WP_USER_PASSWORD}" \
             --allow-root
-
-        #php config
-#        wp config create --dbname="${SQL_DATABASE}" --dbuser="${SQL_USER}" --dbpass="${SQL_PASSWORD}" --dbhost="mariadb:3306" --allow-root
-
 fi
 
-# Set ownership and permissions
 chown -R www-data:www-data /var/www/html || true
 chmod -R 755 /var/www/html
 find /var/www/html -type d -exec chmod 755 {} \;
 find /var/www/html -type f -exec chmod 644 {} \;
-# Set wp-content to writable (for redis cache)
 chown -R www-data:www-data /var/www/html/wp-content || true
 chmod -R 775 /var/www/html/wp-content
 
@@ -51,7 +45,4 @@ mkdir -p /run/php
 chown www-data:www-data /run/php
 chmod 755 /run/php
 
-# Start PHP-FPM
-# exec $PHP_FPM_BIN -F
-# exec /usr/sbin/php-fpm83  -F || exec php-fpm8  -F || exec /usr/sbin/php-fpm  -F ||  exec php-fpm83  -F
 exec php-fpm83 -F
