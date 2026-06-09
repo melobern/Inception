@@ -20,5 +20,6 @@ EXPOSE 9000
 COPY ./conf/www.conf /etc/php83/php-fpm.d/www.conf
 COPY ./tools/wp_init.sh /usr/local/bin/wp_init.sh
 RUN chmod +x /usr/local/bin/wp_init.sh
+RUN echo "memory_limit = 256M" >> /etc/php83/php.ini
 
 ENTRYPOINT ["/usr/local/bin/wp_init.sh"]
