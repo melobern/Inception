@@ -3,11 +3,13 @@
 mkdir -p /var/www/html
 cd /var/www/html
 
-wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-chmod +x wp-cli.phar
-mv wp-cli.phar /usr/local/bin/wp
+if [ ! -f /usr/local/bin/wp ]; then
+	wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+	chmod +x wp-cli.phar
+	mv wp-cli.phar /usr/local/bin/wp
+fi
 
-sleep 10
+# sleep 10
 
 if [ ! -e /var/www/html/wp-config.php ]; then
         echo "WP NOT INSTALLED !"
